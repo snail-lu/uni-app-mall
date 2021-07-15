@@ -82,6 +82,11 @@ npm run build
 
 需要通过 `eslint` 来实现，参考文章[链接](https://ask.dcloud.net.cn/article/37070)。本项目暂未配置。
 
+### 项目截图
+
+![image](https://github.com/Snail-Lu/imageGalleries/blob/main/images/image_20210715161503.png?raw=true)
+![image](https://github.com/Snail-Lu/imageGalleries/blob/main/images/image_20210715162441.png?raw=true)
+
 ### 文档
 
 [1. uniapp 文档](https://uniapp.dcloud.net.cn/)  
