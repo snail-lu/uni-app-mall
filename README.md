@@ -1,4 +1,4 @@
-### zp-mall 微信小程序商城
+### uni-app-mall 微信小程序商城
 
 > 基于 uni-app 框架开发的微信小程序项目基础模板。本项目使用 `vue-cli` 创建。
 
@@ -42,10 +42,10 @@ src
 
 ```bash
 # 克隆
-git clone **
+git clone https://github.com/Snail-Lu/uni-app-mall.git
 
 # 进入根目录
-cd zp-mall-wechat
+cd uni-app-mall
 
 # 安装依赖
 npm install
@@ -84,8 +84,8 @@ npm run build
 
 ### 项目截图
 
-![image](https://github.com/Snail-Lu/imageGalleries/blob/main/images/image_20210715161503.png?raw=true)
-![image](https://github.com/Snail-Lu/imageGalleries/blob/main/images/image_20210715162441.png?raw=true)
+![image](https://github.com/Snail-Lu/imageGalleries/blob/main/uni-app-mall/image_20210715161503.png?raw=true)
+![image](https://github.com/Snail-Lu/imageGalleries/blob/main/uni-app-mall/image_20210715162441.png?raw=true)
 
 ### 文档
 
