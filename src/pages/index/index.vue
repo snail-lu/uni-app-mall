@@ -61,7 +61,7 @@ export default {
 		store.dispatch('refreshCartNum', {
 			cartNum: 10
 		});
-		this.apiTest();
+		// this.apiTest();
 	}
 };
 </script>
