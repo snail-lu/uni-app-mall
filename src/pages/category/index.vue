@@ -24,7 +24,7 @@
 								class="third-cate-item"
 								v-for="thirdCateItem in 8"
 								:key="thirdCateItem"
-								bindtap="toGoodsList"
+								@click="navigateTo"
 							>
 								<view class="item-image"></view>
 								<view class="item-name">三级类目{{ thirdCateItem }}</view>
@@ -37,7 +37,6 @@
 	</view>
 </template>
 <script>
-import { getNavigationBarHeight } from '@/common/utils/index';
 export default {
 	data() {
 		return {
@@ -142,8 +141,7 @@ export default {
 			],
 			currentCateIndex: 0,
 			scrollHeight: 0, // 左侧菜单需要滚动的高度
-			scrollTop: 0, // 右侧菜单滚动归零
-			hotWords: ['iPhone', '荣耀手机', '充电宝', '毛呢大衣']
+			scrollTop: 0 // 右侧菜单滚动归零
 		};
 	},
 	onLoad() {},
@@ -168,23 +166,6 @@ export default {
 			if (scrollHeight > 0) {
 				this.scrollHeight = parseInt(scrollHeight);
 			}
-		},
-
-		// 跳转搜索页面
-		toSearch() {
-			wx.navigateTo({
-				url: '/pages/search/search'
-			});
-		},
-
-		// 滑动切换分类
-		swiperCate(index) {
-			this.currentCateIndex = index;
-		},
-
-		// 跳转商品列表
-		toGoodsList() {
-			wx.navigateTo({ url: '/pages/goodsList/goodsList' });
 		}
 	}
 };
