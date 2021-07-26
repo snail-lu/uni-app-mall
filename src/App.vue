@@ -28,6 +28,9 @@ page {
 .flex-h-center {
 	justify-content: center;
 }
+.flex-h-around {
+	justify-content: space-around;
+}
 .flex-h-end {
 	justify-content: flex-end;
 }

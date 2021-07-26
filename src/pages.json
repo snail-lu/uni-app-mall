@@ -125,7 +125,7 @@
 			}
 		},
 		{
-			"path": "pages/personalInfo/index",
+			"path": "pages/member/personalInfo/index",
 			"style": {
 				"navigationBarTitleText": "个人信息"
 			}
