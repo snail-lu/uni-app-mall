@@ -67,4 +67,10 @@ page {
 	display: flex;
 	flex-direction: column;
 }
+/* 单行文本，超出省略 */
+.singleline-text {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 </style>
