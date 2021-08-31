@@ -8,17 +8,16 @@
 					>{{ isEditMode ? '完成' : '管理' }}
 				</text>
 			</view>
-			<view class="cart-goods-list" v-for="(cartItem, cartIndex) in cartList" :key="cartIndex">
+			<view class="cart-goods-list">
 				<!-- 商品列表 -->
-				<checkbox-group bindchange="bindCheckBoxChange">
+				<checkbox-group @change="onCheckBoxChange">
 					<!-- 普通商品 -->
-					<view class="goods-box">
+					<view class="goods-box" v-for="cartItem in cartList" :key="cartItem.id">
 						<checkbox
 							class="cart-checkbox"
 							color="#fff"
-							:value="item.id"
-							:checked="item.status == 1"
-							@click="bindSelectCartItem"
+							:value="cartItem.id"
+							:checked="cartItem.selected"
 						/>
 						<view class="flex-box">
 							<image src="" class="goods-img flex-shrink-0" />
@@ -59,7 +58,7 @@
 		<!--================ 编辑操作=============== -->
 		<view v-if="isEditMode" class="cart-settle-area flex-box flex-h-between flex-v-center">
 			<view class="radio-btn flex-box flex-v-center flex-item-1">
-				<radio color="#000" class="cart-checkbox" :checked="isSelectAll == 1" @click="bindSelectCartShipItem" />
+				<radio color="#000" class="cart-checkbox" :checked="isSelectAll" @click="bindSelectCartShipItem" />
 				<span style="line-height: 1;">全选</span>
 			</view>
 			<text class="collect-btn" @click="bindBatchAddCollect">移入收藏夹</text>
@@ -67,7 +66,7 @@
 		</view>
 		<view v-else class="cart-settle-area flex-box flex-h-between flex-v-center">
 			<view class="radio-btn flex-box flex-v-center flex-item-1">
-				<radio color="#000" class="cart-checkbox" :checked="isSelectAll == 1" @click="bindSelectCartShipItem" />
+				<radio color="#000" class="cart-checkbox" :checked="isSelectAll" @click="clickToSelectAll" />
 				<span style="line-height: 1;">全选</span>
 			</view>
 			<view class="amount-info">
@@ -95,21 +94,66 @@ export default {
 		return {
 			cartList: [
 				{
+					id: 1,
 					goodsName: '测试商品1，名字超长测试测试测试测试测试',
 					marketPrice: '599.00',
 					salePrice: '342.00',
 					goodsNum: 1,
-					goodsSpec: '黑色，XXL'
+					goodsSpec: '黑色，XXL',
+					selected: false
+				},
+				{
+					id: 2,
+					goodsName: '测试商品2，名字超长测试测试测试测试测试',
+					marketPrice: '499.00',
+					salePrice: '299.00',
+					goodsNum: 1,
+					goodsSpec: '藏青色，XXL',
+					selected: false
 				}
 			],
 			isEditMode: false, // 编辑模式
 			totalNum: 10,
-			totalPrice: 1899.0
+			totalPrice: '1899.0',
+			isSelectAll: false
 		};
 	},
+	watch: {
+		isSelectAll: function(newValue) {
+			this.cartList.forEach(cartItem => {
+				cartItem.selected = newValue;
+			});
+		},
+		cartList: {
+			handler(newValue) {
+				console.log(newValue);
+				this.isSelectAll = newValue.every(cartItem => cartItem.selected);
+			},
+			deep: true
+		}
+	},
 	methods: {
+		// 页面跳转
 		navigateTo() {
 			this.pushUrl('/pages/order/create');
+		},
+
+		// 全选/取消全选
+		clickToSelectAll() {
+			const { isSelectAll } = this;
+			this.isSelectAll = !isSelectAll;
+		},
+
+		// 选中状态修改
+		onCheckBoxChange(e) {
+			const selectedCartItemIds = e.detail.value;
+			this.cartList.forEach(cartItem => {
+				if (selectedCartItemIds.includes(cartItem.id + '')) {
+					cartItem.selected = true;
+				} else {
+					cartItem.selected = false;
+				}
+			});
 		}
 	}
 };
