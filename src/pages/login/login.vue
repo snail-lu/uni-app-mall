@@ -57,7 +57,7 @@
 import config from '@/config';
 import apiUrl from '@/config/api';
 import { trim, checkMobile } from '@/common/utils/index';
-import UserService from '@/services/common/userService';
+import UserService from '@/services/page/userService';
 import CountdownButton from '@/common/components/countdownButton.vue';
 
 export default {
