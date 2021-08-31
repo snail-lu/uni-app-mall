@@ -1,13 +1,12 @@
 <template>
 	<view class="cart-container flex-box-column" v-if="cartList.length">
 		<!-- ================购物车主内容=============== -->
-		<view class="cart-main flex-item-1 overflow-y-scroll">
+		<view class="cart-main flex-item-1">
 			<view class="cart-header flex-box flex-h-between flex-v-center">
 				<text>共{{ totalNum }}件宝贝</text>
-				<text class="edit-btn" @click="bindCartModeChange(cartShipItem.checkStatus)"
-					>{{ isEditMode ? '完成' : '管理' }}
-				</text>
+				<text class="edit-btn" @click="onEditModeChange">{{ isEditMode ? '完成' : '管理' }} </text>
 			</view>
+			<!-- 正常商品 -->
 			<view class="cart-goods-list">
 				<!-- 商品列表 -->
 				<checkbox-group @change="onCheckBoxChange">
@@ -33,49 +32,58 @@
 							</view>
 						</view>
 					</view>
+				</checkbox-group>
+			</view>
 
-					<!-- 失效商品 -->
-					<view class="cart-invalid-list" v-if="invalidCartList.length > 0">
-						<view class="cart-invalid-header flex-box flex-box-h-between">
-							<view>失效商品{{ invalidCartList.length }}件</view>
-							<view class="invalid-actions">
-								<text @click="moveInvalidToCollect">移到收藏夹</text>
-								<text @click="clearInvalidCartItem">清空</text>
+			<!-- 失效商品 -->
+			<view class="cart-goods-list" v-if="invalidCartList.length > 0">
+				<view class="cart-invalid-header flex-box flex-h-between">
+					<view>失效商品{{ invalidCartList.length }}件</view>
+					<view class="invalid-actions">
+						<text @click="onAddInvalidToCollect">移到收藏夹</text>
+						<text @click="onClearInvalidCart">清空</text>
+					</view>
+				</view>
+				<view class="invalid-goods-box" v-for="(invalidGoodsItem, index) in invalidCartList" :key="index">
+					<view class="flex-box">
+						<image src="" class="goods-img flex-shrink-0" />
+						<view class="goods-info flex-item-1 flex-box-column flex-h-between">
+							<view>
+								<view class="goods-name singleline-text">{{ invalidGoodsItem.goodsName }}</view>
+								<view class="goods-spec">{{ invalidGoodsItem.goodsSpec }}</view>
+							</view>
+							<view class="flex-box flex-h-between flex-v-center">
+								<view class="invalid-goods-price">¥{{ invalidGoodsItem.salePrice }}</view>
+								<view class="invalid-label">已失效</view>
 							</view>
 						</view>
-						<view
-							class="invalid-goods-item"
-							v-for="(invalidGoodsItem, index) in invalidCartList"
-							:key="index"
-						>
-							<view>失效商品</view>
-						</view>
 					</view>
-				</checkbox-group>
+				</view>
 			</view>
 		</view>
 
 		<!--================ 编辑操作=============== -->
-		<view v-if="isEditMode" class="cart-settle-area flex-box flex-h-between flex-v-center">
+		<view class="cart-settle-area flex-box flex-h-between flex-v-center">
 			<view class="radio-btn flex-box flex-v-center flex-item-1">
-				<radio color="#000" class="cart-checkbox" :checked="isSelectAll" @click="bindSelectCartShipItem" />
+				<radio color="#000" class="cart-checkbox" :checked="isSelectAll" @click="onSelectAll" />
 				<span style="line-height: 1;">全选</span>
 			</view>
-			<text class="collect-btn" @click="bindBatchAddCollect">移入收藏夹</text>
-			<text class="del-btn" @click="bindDelMenu">删除</text>
-		</view>
-		<view v-else class="cart-settle-area flex-box flex-h-between flex-v-center">
-			<view class="radio-btn flex-box flex-v-center flex-item-1">
-				<radio color="#000" class="cart-checkbox" :checked="isSelectAll" @click="clickToSelectAll" />
-				<span style="line-height: 1;">全选</span>
-			</view>
-			<view class="amount-info">
-				<text>合计：</text>
-				<text class="total-price">￥{{ totalPrice }}</text>
-			</view>
-			<view :class="['settle-btn', totalNum > 0 ? '' : 'disabled']" bindtap="bindSettle"
-				>结算 <text v-if="totalNum">({{ totalNum > 99 ? '99+' : totalNum }})</text></view
-			>
+			<!-- 编辑模式 -->
+			<block v-if="isEditMode">
+				<text class="collect-btn" @click="onAddCollect">移入收藏夹</text>
+				<text class="del-btn" @click="onDelete">删除</text>
+			</block>
+			<!-- 普通模式 -->
+			<block v-else>
+				<view class="amount-info">
+					<text>合计：</text>
+					<text class="total-price">￥{{ totalPrice }}</text>
+				</view>
+				<view :class="['settle-btn', selectedGoodsNum > 0 ? '' : 'disabled']" @click="bindSettle"
+					>结算
+					<text v-if="selectedGoodsNum">({{ selectedGoodsNum > 99 ? '99+' : selectedGoodsNum }})</text></view
+				>
+			</block>
 		</view>
 	</view>
 	<!-- 购物车无商品 -->
@@ -110,10 +118,49 @@ export default {
 					goodsNum: 1,
 					goodsSpec: '藏青色，XXL',
 					selected: false
+				},
+				{
+					id: 3,
+					goodsName: '测试商品3，名字超长测试测试测试测试测试',
+					marketPrice: '459.00',
+					salePrice: '399.00',
+					goodsNum: 1,
+					goodsSpec: '灰色，XXL',
+					selected: false
+				},
+				{
+					id: 4,
+					goodsName: '测试商品4，名字超长测试测试测试测试测试',
+					marketPrice: '359.00',
+					salePrice: '299.00',
+					goodsNum: 1,
+					goodsSpec: '白色，XXL',
+					selected: false
+				}
+			],
+			invalidCartList: [
+				{
+					id: 1,
+					goodsName: '测试商品1，名字超长测试测试测试测试测试',
+					marketPrice: '599.00',
+					salePrice: '342.00',
+					goodsNum: 1,
+					goodsSpec: '黑色，XXL',
+					selected: false
+				},
+				{
+					id: 2,
+					goodsName: '测试商品2，名字超长测试测试测试测试测试',
+					marketPrice: '499.00',
+					salePrice: '299.00',
+					goodsNum: 1,
+					goodsSpec: '藏青色，XXL',
+					selected: false
 				}
 			],
 			isEditMode: false, // 编辑模式
-			totalNum: 10,
+			totalNum: 4, // 购物车商品数量
+			selectedGoodsNum: 0, // 已选商品数量
 			totalPrice: '1899.0',
 			isSelectAll: false
 		};
@@ -126,8 +173,17 @@ export default {
 		},
 		cartList: {
 			handler(newValue) {
-				console.log(newValue);
-				this.isSelectAll = newValue.every(cartItem => cartItem.selected);
+				let selectedGoodsNum = 0;
+				let isSelectAll = true;
+				newValue.forEach(cartItem => {
+					if (!cartItem.selected) {
+						isSelectAll = false;
+					} else {
+						selectedGoodsNum += cartItem.goodsNum;
+					}
+				});
+				this.selectedGoodsNum = selectedGoodsNum;
+				this.isSelectAll = isSelectAll;
 			},
 			deep: true
 		}
@@ -139,7 +195,7 @@ export default {
 		},
 
 		// 全选/取消全选
-		clickToSelectAll() {
+		onSelectAll() {
 			const { isSelectAll } = this;
 			this.isSelectAll = !isSelectAll;
 		},
@@ -152,6 +208,56 @@ export default {
 					cartItem.selected = true;
 				} else {
 					cartItem.selected = false;
+				}
+			});
+		},
+
+		// 编辑模式修改
+		onEditModeChange() {
+			const { isEditMode } = this;
+			this.isEditMode = !isEditMode;
+		},
+
+		// 收藏商品
+		onAddCollect() {
+			const { cartList, isSelectAll } = this;
+			if (isSelectAll) {
+				this.cartList = [];
+			} else {
+				this.cartList = cartList.filter(cartItem => !cartItem.selected);
+			}
+			this.tips('收藏成功~');
+		},
+
+		// 删除购物车
+		onDelete() {
+			const { cartList, isSelectAll } = this;
+			this.confirm('确认删除已选商品?')
+				.then(confirm => {
+					if (confirm) {
+						if (isSelectAll) {
+							this.cartList = [];
+						} else {
+							this.cartList = cartList.filter(cartItem => !cartItem.selected);
+						}
+					}
+				})
+				.catch(e => {
+					console.log(e, 'error');
+				});
+		},
+
+		// 失效商品移至收藏夹
+		onAddInvalidToCollect() {
+			this.invalidCartList = [];
+			this.tips('收藏成功~');
+		},
+
+		// 清空失效商品
+		onClearInvalidCart() {
+			this.confirm('确认清空所有失效商品?').then(confirm => {
+				if (confirm) {
+					this.invalidCartList = [];
 				}
 			});
 		}
@@ -172,7 +278,8 @@ page {
 	padding-bottom: env(safe-area-inset-bottom);
 
 	.cart-main {
-		margin-bottom: 32rpx;
+		padding-bottom: 30rpx;
+		overflow-y: scroll;
 	}
 
 	//多选框选中时
@@ -207,8 +314,9 @@ page {
 		font-size: 26rpx;
 		padding: 16rpx 32rpx;
 		background: #ffffff;
-		border-top: 1px solid #dadada;
+		border-top: 1px solid #eee;
 		box-sizing: border-box;
+		border-bottom: 1px solid #eee;
 
 		.amount-info {
 			font-size: 28rpx;
@@ -236,10 +344,10 @@ page {
 		.collect-btn,
 		.del-btn {
 			border: 2rpx solid #000;
-			border-radius: 6rpx;
+			border-radius: 50rpx;
 			padding: 0 32rpx;
-			height: 49rpx;
-			line-height: 49rpx;
+			height: 50rpx;
+			line-height: 50rpx;
 			font-size: 24rpx;
 			box-sizing: border-box;
 		}
@@ -253,6 +361,21 @@ page {
 	.cart-goods-list {
 		padding: 0 32rpx;
 		border-radius: 10rpx;
+		.cart-invalid-header {
+			// padding: 0 36rpx;
+			height: 92rpx;
+			line-height: 92rpx;
+			font-size: 28rpx;
+			color: #333;
+
+			.invalid-actions {
+				font-size: 28rpx;
+				color: #fd7404;
+				text {
+					margin-left: 40rpx;
+				}
+			}
+		}
 
 		// 失效商品
 		.goods-item.invalid-item {
@@ -263,86 +386,67 @@ page {
 			border-radius: 6rpx;
 			padding: 32rpx 40rpx 32rpx 0;
 			background-color: #fff;
-
 			padding-left: 98rpx;
 			position: relative;
-
-			.goods-img {
-				width: 200rpx;
-				height: 200rpx;
-				background-color: #f6f6f6;
-			}
-
-			.goods-info {
-				margin-left: 20rpx;
-				overflow: hidden;
-			}
-
-			.goods-name {
-				font-size: 26rpx;
-				font-weight: 500;
-			}
-
-			.goods-spec {
-				font-size: 24rpx;
-				color: #888;
-				margin-top: 18rpx;
-			}
-
-			.goods-price {
-				color: #f4333c;
-				font-size: 30rpx;
-			}
-			.cart-checkbox {
-				position: absolute;
-				top: 50%;
-				left: 49rpx;
-				margin-top: -18rpx;
-				margin-left: -18rpx;
-			}
 		}
-	}
-}
 
-.cart-invalid-list {
-	padding: 0 32rpx;
-	.cart-invalid-header {
-		// padding: 0 36rpx;
-		height: 92rpx;
-		line-height: 92rpx;
-		font-size: 28rpx;
-		color: #333;
-
-		.invalid-actions {
-			font-size: 28rpx;
-			color: #fd7404;
-			text {
-				margin-left: 40rpx;
-			}
+		.invalid-goods-box {
+			border-radius: 6rpx;
+			padding: 32rpx 40rpx;
+			background-color: #fff;
+			position: relative;
 		}
-	}
-	.invalid-goods-item {
-		padding: 32rpx 40rpx;
-		background-color: #fff;
-		border-radius: 6rpx;
-	}
-	.invalid-label {
-		width: 90rpx;
-		height: 44rpx;
-		background: #d8d8d8;
-		border-radius: 22rpx;
-		line-height: 44rpx;
-		text-align: center;
-		font-size: 28rpx;
-		color: #fff;
-	}
-	.goods-img {
-		width: 235rpx;
-		height: 235rpx;
-		margin-right: 28rpx;
-	}
-	.goods-name {
-		font-size: 28rpx;
+
+		.invalid-label {
+			width: 90rpx;
+			height: 44rpx;
+			background: #d8d8d8;
+			border-radius: 22rpx;
+			line-height: 44rpx;
+			text-align: center;
+			font-size: 26rpx;
+			color: #fff;
+			padding: 0 16rpx;
+		}
+
+		.goods-img {
+			width: 200rpx;
+			height: 200rpx;
+			background-color: #f6f6f6;
+		}
+
+		.goods-info {
+			margin-left: 20rpx;
+			overflow: hidden;
+		}
+
+		.goods-name {
+			font-size: 26rpx;
+			font-weight: 500;
+		}
+
+		.goods-spec {
+			font-size: 24rpx;
+			color: #888;
+			margin-top: 18rpx;
+		}
+
+		.goods-price {
+			color: #f4333c;
+			font-size: 30rpx;
+		}
+
+		.invalid-goods-price {
+			color: #d8d8d8;
+			font-size: 30rpx;
+		}
+		.cart-checkbox {
+			position: absolute;
+			top: 50%;
+			left: 49rpx;
+			margin-top: -18rpx;
+			margin-left: -18rpx;
+		}
 	}
 }
 
