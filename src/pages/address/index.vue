@@ -9,7 +9,11 @@
 							<view class="mobile">{{ addressItem.mobile }}</view>
 							<view class="default" v-if="addressItem.isDefault">默认</view>
 						</view>
-						<view class="address-text"> {{ addressItem.detailAddress }}</view>
+						<view class="address-text">
+							{{
+								`${addressItem.province}${addressItem.city}${addressItem.district}${addressItem.detailAddress}`
+							}}</view
+						>
 					</view>
 					<view class="flex-box-v flex-v-center">
 						<view class="edit-icon flex-box flex-h-between">
@@ -40,14 +44,20 @@ export default {
 					consignee: '路先生',
 					mobile: '13112341234',
 					isDefault: 1,
-					detailAddress: '上海市浦东新区世纪大道2001号'
+					province: '上海市',
+					city: '上海市',
+					district: '浦东新区',
+					detailAddress: '世纪大道2001号'
 				},
 				{
 					id: 2,
 					consignee: '张小姐',
 					mobile: '15112341234',
 					isDefault: 0,
-					detailAddress: '上海市浦东新区世纪大道2002号'
+					province: '上海市',
+					city: '上海市',
+					district: '浦东新区',
+					detailAddress: '世纪大道2002号'
 				}
 			],
 			params: {
