@@ -8,7 +8,7 @@
 				<open-data type="userNickName"></open-data>
 			</view>
 			<view style="position: absolute;right: 40rpx;top: 126rpx;">
-				<i class="iconfont icon-pen" style="font-size:30rpx;"></i>
+				<i class="iconfont icon-pen" style="font-size:34rpx;"></i>
 			</view>
 		</view>
 		<view class="block">
@@ -63,17 +63,17 @@
 				<uni-list-item title="其他服务"></uni-list-item>
 			</uni-list>
 			<view class="menu flex-box flex-h-around">
+				<view class="item" @click="pageNavigate('coupon')">
+					<i class="iconfont icon-coupon-deep"></i>
+					<view>优惠券</view>
+				</view>
 				<view class="item" @click="pageNavigate('address')">
 					<i class="iconfont icon-address"></i>
 					<view>收货地址</view>
 				</view>
 				<view class="item" @click="pageNavigate('favorites')">
 					<i class="iconfont icon-heart-a"></i>
-					<view>我的收藏</view>
-				</view>
-				<view class="item" @click="pageNavigate('personnalInfo')">
-					<i class="iconfont icon-diamond-a"></i>
-					<view>个人信息</view>
+					<view>收藏夹</view>
 				</view>
 				<view class="item" @click="clickToMakeCall">
 					<i class="iconfont icon-service-b" style="font-size:54rpx;"></i>

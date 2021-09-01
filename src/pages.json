@@ -89,7 +89,7 @@
 			}
 		},
 		{
-			"path": "pages/member/order/logistics",
+			"path": "pages/member/logistics/index",
 			"style": {
 				"navigationBarTitleText": "物流信息"
 			}
