@@ -77,13 +77,19 @@
 			}
 		},
 		{
-			"path": "pages/member/order/index",
+			"path": "pages/member/coupon/index",
+			"style": {
+				"navigationBarTitleText": "优惠券"
+			}
+		},
+		{
+			"path": "pages/order/index",
 			"style": {
 				"navigationBarTitleText": "订单列表"
 			}
 		},
 		{
-			"path": "pages/member/order/detail",
+			"path": "pages/order/detail",
 			"style": {
 				"navigationBarTitleText": "订单详情"
 			}

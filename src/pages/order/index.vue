@@ -4,14 +4,14 @@
 	</view>
 </template>
 <script>
-import PlatformService from "@/services/common/platformService.js";
+import PlatformService from '@/services/common/platformService.js';
 export default {
 	data() {
 		return {};
 	},
 	methods: {
 		navigateTo() {
-			PlatformService.pushUrl("/pages/member/order/detail");
+			PlatformService.pushUrl('/pages/order/detail');
 		}
 	}
 };
