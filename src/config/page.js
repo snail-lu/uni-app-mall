@@ -4,6 +4,7 @@ export default {
 	address: '/pages/address/index',
 	addressDetail: '/pages/address/detail',
 	favorites: '/pages/member/favorites/index',
+	coupon: '/pages/member/coupon/index',
 	personalInfo: '/pages/member/personalInfo/index',
 	afterSale: '/pages/member/afterSale/index'
 };
