@@ -13,37 +13,32 @@
 		</view>
 		<view class="block">
 			<uni-list class="title" :border="false">
-				<uni-list-item
-					title="我的订单"
-					link
-					to="/pages/member/order/index"
-					rightText="查看全部"
-				></uni-list-item>
+				<uni-list-item title="我的订单" link to="/pages/order/index" rightText="查看全部"></uni-list-item>
 			</uni-list>
 			<view class="flex-box menu">
 				<view style="position: relative;" class="flex-item-1">
-					<view class="item" @click="pushUrl('/pages/member/order/index?orderStatus=1')">
+					<view class="item" @click="pushUrl('/pages/order/index?orderStatus=1')">
 						<uni-badge class="num_b" size="small" type="error" text="10"></uni-badge>
 						<i class="iconfont icon-pending"></i>
 						<view>待付款</view>
 					</view>
 				</view>
 				<view style="position: relative;" class="flex-item-1">
-					<view class="item" @click="pushUrl('/pages/member/order/index?orderStatus=2')">
+					<view class="item" @click="pushUrl('/pages/order/index?orderStatus=2')">
 						<uni-badge class="num_b" size="small" type="error" text="8"></uni-badge>
 						<i class="iconfont icon-bag"></i>
 						<view>待发货</view>
 					</view>
 				</view>
 				<view style="position: relative;" class="flex-item-1">
-					<view class="item" @click="pushUrl('/pages/member/order/index?orderStatus=3')">
+					<view class="item" @click="pushUrl('/pages/order/index?orderStatus=3')">
 						<uni-badge class="num_b" size="small" type="error" text="6"></uni-badge>
 						<i class="iconfont icon-track"></i>
 						<view>待收货</view>
 					</view>
 				</view>
 				<view style="position: relative;" class="flex-item-1">
-					<view class="item" @click="pushUrl('/pages/member/order/index?orderStatus=4')">
+					<view class="item" @click="pushUrl('/pages/order/index?orderStatus=4')">
 						<uni-badge class="num_b" size="small" type="error" text="3"></uni-badge>
 						<i class="iconfont icon-completed"></i>
 						<view>已收货</view>
