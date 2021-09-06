@@ -11,20 +11,27 @@
 				>已过期</view
 			>
 		</view>
-		<view class="coupon-list" v-if="couponList.length > 0">
-			<view class="coupon-item flex-box" v-for="(item, index) in couponList" :key="index">
-				<view class="item-left">
-					<view>{{ item.couponName }}</view>
-					<view class="flex-box" style="align-items: baseline;">
-						<view>￥</view>
-						<view style="font-size: 44rpx">{{ item.couponMoney }}</view>
-					</view>
-					<view>{{ '满' + item.couponLimit + '元可用' }}</view>
+		<view class="coupon-list" v-if="showCouponList.length > 0">
+			<view
+				:class="['coupon-item flex-box flex-v-center', item.status != 1 ? 'coupon-item-disabled' : '']"
+				v-for="(item, index) in showCouponList"
+				:key="index"
+			>
+				<view class="flex-box" style="align-items: baseline;">
+					<view>¥</view>
+					<view style="font-size: 48rpx">{{ item.couponMoney }}</view>
 				</view>
-				<view class="item-right">
-					<view>{{ item.effectTime }}</view>
-					<view>至</view>
-					<view>{{ item.expireTime }}</view>
+				<view class="coupon-info flex-item-1">
+					<view class="coupon-name">{{ item.couponName }}</view>
+					<view class="coupon-desc">{{ '满' + item.couponLimit + '元可用' }}</view>
+					<view class="coupon-date">{{ item.effectTime }} 至 {{ item.expireTime }}</view>
+					<view
+						:class="[
+							'iconfont',
+							item.status === 2 ? 'icon-yishiyong' : '',
+							item.status === 3 ? 'icon-yiguoqi' : ''
+						]"
+					></view>
 				</view>
 			</view>
 		</view>
@@ -41,7 +48,24 @@ export default {
 					couponMoney: 50,
 					couponLimit: 199,
 					effectTime: '2021-09-02 00:00:00',
-					expireTime: '2021-09-02 23:59:59'
+					expireTime: '2021-09-02 23:59:59',
+					status: 1
+				},
+				{
+					couponName: '618满减券',
+					couponMoney: 50,
+					couponLimit: 199,
+					effectTime: '2021-09-02 00:00:00',
+					expireTime: '2021-09-02 23:59:59',
+					status: 2
+				},
+				{
+					couponName: '618满减券',
+					couponMoney: 50,
+					couponLimit: 199,
+					effectTime: '2021-09-02 00:00:00',
+					expireTime: '2021-09-02 23:59:59',
+					status: 3
 				}
 			],
 			total: 0,
@@ -53,8 +77,13 @@ export default {
 			}
 		};
 	},
+	computed: {
+		// 测试用
+		showCouponList() {
+			return this.couponList.filter(item => item.status == this.status);
+		}
+	},
 	onLoad() {},
-	beforeDestroy() {},
 	onReachBottom: function() {
 		// 页面滚动到底部的事件
 		this.handleScroll();
@@ -113,14 +142,28 @@ page {
 			color: #fff;
 			border-radius: 10rpx;
 
-			.item-left {
-				width: 65%;
+			&-disabled {
+				background-color: #ccc;
 			}
-			.item-right {
-				font-size: 26rpx;
-				width: 35%;
-				text-align: center;
-			}
+		}
+		.coupon-info {
+			margin-left: 20rpx;
+			position: relative;
+		}
+		.coupon-desc {
+			font-size: 24rpx;
+			margin-top: 10rpx;
+		}
+		.coupon-date {
+			font-size: 20rpx;
+			margin-top: 6rpx;
+		}
+
+		.iconfont {
+			position: absolute;
+			top: 0;
+			right: 0;
+			font-size: 120rpx;
 		}
 	}
 	.empty-tips {
