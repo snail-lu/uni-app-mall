@@ -44,7 +44,7 @@
 				</button>
 				<view class="menu-item" @click="switchTo">
 					<uni-badge class="num_b" size="small" type="error" text="3"></uni-badge>
-					<i class="iconfont icon-cart-a"></i>
+					<i class="iconfont icon-add-cart"></i>
 					<view>购物车</view>
 				</view>
 			</view>
