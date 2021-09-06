@@ -6,6 +6,20 @@
   "description": "常用通用图标",
   "glyphs": [
     {
+      "icon_id": "1069170",
+      "name": "已过期",
+      "font_class": "yiguoqi",
+      "unicode": "e642",
+      "unicode_decimal": 58946
+    },
+    {
+      "icon_id": "1069171",
+      "name": "已使用",
+      "font_class": "yishiyong",
+      "unicode": "e643",
+      "unicode_decimal": 58947
+    },
+    {
       "icon_id": "22584808",
       "name": "客服",
       "font_class": "service-b",
