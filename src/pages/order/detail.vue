@@ -28,10 +28,10 @@
 				class="goods-item flex-box"
 				v-for="(item, index) in orderGoodsList"
 				:key="index"
-				@click="toGoodsDetail(item)"
+				@click="toGoodsDetail(item.goodsSn)"
 			>
 				<view class="flex-box">
-					<image :src="getImgUrl(item.goodsUrl)" />
+					<image :src="getImgUrl(item.goodsUrl)" class="goods-image flex-shrink-0" />
 					<view class="item-goodsInfo">
 						<view class="item-name-prop">
 							<view class="item-goodsName">
@@ -40,7 +40,6 @@
 							</view>
 							<view class="item-goodsProp flex-box flex-wrap">
 								<view class="item-goodsProp" v-for="(propitem, index) of item.showProps" :key="index">
-									<!-- {{ (index == 0 ? '' : '， ') + propitem }} -->
 									{{ propitem + (item.showProps[index + 1] ? '，' : '') }}
 								</view>
 							</view>
@@ -58,7 +57,7 @@
 			<view class="goodsList-btn flex-box">
 				<view class="link-item flex-box" @click="toCall">
 					<view class="icon-phone"><uni-icons type="phone" size="17" color="#666"/></view>
-					<view>联系方式</view>
+					<view>联系客服</view>
 				</view>
 				<view class="link-item" @click="toHome">返回首页</view>
 			</view>
@@ -118,8 +117,8 @@
 					}}<view>{{ '.' + ((orderInfo.postage + '').split('.')[1] || '00') }}</view></view
 				>
 			</view>
-			<view class="payInfo-item2 flex-box">
-				<view>在线支付：</view>
+			<view class="payInfo-item1 flex-box">
+				<view>实际支付：</view>
 				<view class="item-Price2"
 					><view>￥</view> {{ (orderInfo.payPrice + '').split('.')[0]
 					}}<view>{{ '.' + ((orderInfo.payPrice + '').split('.')[1] || '00') }}</view></view
@@ -193,16 +192,20 @@ export default {
 				discount: '79.97',
 				postage: '0',
 				payPrice: '700',
-				deliveryType: 2
+				deliveryType: 2,
+				payLastTime: 143243243, // 剩余支付时间'
+				shopTel: '123456'
 			},
 			orderGoodsList: [
 				{
+					goodsSn: '123456',
 					goodsName: '测试商品1',
 					showProps: ['黑色', 'XXL'],
 					goodsPrice: 259.99,
 					goodsNum: 2
 				},
 				{
+					goodsSn: '123457',
 					goodsName: '测试商品2',
 					showProps: ['白色', 'XXL'],
 					goodsPrice: 259.99,
@@ -259,13 +262,9 @@ export default {
 	},
 	onLoad(option) {
 		this.orderSn = option.orderSn;
-		if (option.noButton) {
-			this.noButton = true;
-		}
-		// this.getInvoiceCycle();
 	},
 	onShow() {
-		// this.getOrderInfo();
+		this.getOrderInfo();
 	},
 	onUnload: function() {
 		if (this.timeSign) {
@@ -300,12 +299,12 @@ export default {
 
 			//如果订单待支付，展示取消订单按钮和倒计时
 			if (true) {
-				// this.countdown();
+				this.countdown();
 			}
 		},
 		//倒计时
 		countdown() {
-			this.surplusValue = this.orderInfo.payLastTime - this.currentTime;
+			this.surplusValue = this.orderInfo.payLastTime;
 			if (this.surplusValue < 1000) {
 				this.orderInfo.orderStatus = 6;
 				return;
@@ -328,14 +327,9 @@ export default {
 		},
 
 		//跳转商品详情
-		toGoodsDetail(goodsItem) {
-			let { goodsSn, orderFrom } = goodsItem;
-			let params = {
-				productId: goodsSn,
-				channelCode: orderFrom
-			};
-			let url = this.urlTo('goodsDetail', params);
-			this.pushUrl(url);
+		toGoodsDetail(sn) {
+			const url = config.pageUrl.goodsDetail;
+			this.pushUrl(`${url}?code=${sn}`);
 		},
 
 		//二次付款
@@ -366,7 +360,6 @@ export default {
 				signType: signType,
 				paySign: paySign
 			};
-			// #ifdef MP-WEIXIN
 			PlatformService.requestPay(timeStamp, nonceStr, payRes['package'], signType, paySign)
 				.then(() => {
 					this.paySuccess();
@@ -374,8 +367,7 @@ export default {
 				.catch(e => {
 					this.payFailure();
 				});
-			// #endif
-			// #ifdef H5
+
 			params.appId = config.wechatAppId;
 			await PlatformService.waitWeixinJSBridge();
 			if (typeof WeixinJSBridge) {
@@ -389,7 +381,6 @@ export default {
 					}
 				});
 			}
-			// #endif
 		},
 		//支付成功
 		async paySuccess(payOrderSn = '') {
@@ -554,14 +545,12 @@ export default {
 
 		//复制文本
 		copy(value) {
-			// #ifdef H5
 			new Clipboard(value);
 			uni.showToast({
 				title: '复制成功',
 				icon: 'none'
 			});
-			// #endif
-			// #ifdef MP-WEIXIN
+
 			uni.setClipboardData({
 				//准备复制的数据
 				data: value,
@@ -571,11 +560,10 @@ export default {
 					});
 				}
 			});
-			// #endif
 		},
 		//返回首页
 		toHome() {
-			this.switchUrl(config.pageUrl.common.home);
+			this.switchUrl(config.pageUrl.home);
 		},
 		//售后申请
 		toafterSale() {
@@ -634,7 +622,7 @@ export default {
 	.detail-goodsList {
 		margin-top: 30rpx;
 		background: #fff;
-		padding: 30rpx 20rpx 0;
+		padding: 30rpx 36rpx 0;
 		border-radius: 10rpx 10rpx 20rpx 20rpx;
 		.goodsList-title {
 			font-size: 28rpx;
@@ -642,10 +630,10 @@ export default {
 			font-weight: bold;
 			margin-bottom: 20rpx;
 		}
-		image {
-			min-width: 200rpx;
+		.goods-image {
 			height: 200rpx;
-			max-width: 200rpx;
+			width: 200rpx;
+			background-color: #ccc;
 		}
 		.goods-item {
 			justify-content: space-between;
@@ -727,8 +715,8 @@ export default {
 		background: #fff;
 		border-radius: 10rpx;
 		font-size: 28rpx;
+		padding: 0 36rpx;
 		.orderInfo-item {
-			margin: 0 20rpx;
 			padding: 30rpx 0;
 			line-height: 60rpx;
 			border-bottom: 1px solid #f6f6f4;
@@ -774,11 +762,12 @@ export default {
 	}
 	.detail-payInfo {
 		margin-top: 20rpx;
-		padding: 30rpx 20rpx;
+		padding: 30rpx 36rpx;
 		background: #fff;
 		border-radius: 10rpx;
 		.payInfo-item1 {
 			justify-content: space-between;
+			// line-height: 2;
 			> view {
 				font-size: 28rpx;
 			}
@@ -791,23 +780,12 @@ export default {
 					line-height: 40rpx;
 				}
 			}
-		}
-		.payInfo-item2 {
-			justify-content: flex-end;
-			font-weight: bold;
-			view {
-				font-size: 28rpx;
-				line-height: 50rpx;
-			}
 			.item-Price2 {
 				margin-left: 20prx;
 				color: #ff350d;
 				display: flex;
 				font-size: 34rpx;
-				view {
-					font-size: 30rpx;
-					line-height: 55rpx;
-				}
+				font-weight: bold;
 			}
 		}
 	}
