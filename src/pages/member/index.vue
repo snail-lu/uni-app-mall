@@ -213,7 +213,8 @@ export default {
 	height: 200px;
 
 	.title {
-		padding: 20rpx 0 30rpx;
+		height: 50px;
+		line-height: 50px;
 		text-align: center;
 	}
 
@@ -225,11 +226,13 @@ export default {
 
 	.close-btn {
 		width: 100%;
+		height: 40px;
+		line-height: 40px;
 		text-align: center;
 		font-size: 24rpx;
-		padding: 20rpx 0;
 		border-top: 1px solid #ccc;
-		margin-top: 20rpx;
+		box-sizing: border-box;
+		margin-top: 10px;
 	}
 }
 </style>
