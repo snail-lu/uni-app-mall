@@ -1,16 +1,22 @@
 <template>
 	<view class="member-container">
-		<view class="header flex-box flex-v-center" @click="pageNavigate('personalInfo')">
-			<view class="avatar-box">
-				<open-data type="userAvatarUrl"></open-data>
+		<view class="header flex-box flex-v-center flex-h-between">
+			<view class="flex-box flex-v-center" @click="pageNavigate('personalInfo')">
+				<view class="avatar-box">
+					<open-data type="userAvatarUrl"></open-data>
+				</view>
+				<view class="username-box">
+					<open-data type="userNickName"></open-data>
+					<view class="member-label">普通会员</view>
+				</view>
 			</view>
-			<view class="username-box">
-				<open-data type="userNickName"></open-data>
-			</view>
-			<view style="position: absolute;right: 40rpx;top: 126rpx;">
-				<i class="iconfont icon-pen" style="font-size:34rpx;"></i>
+
+			<view @click="showPopup">
+				<i class="iconfont icon-erweima" style="font-size:50rpx;"></i>
 			</view>
 		</view>
+
+		<!-- 订单板块 -->
 		<view class="block">
 			<uni-list class="title" :border="false">
 				<uni-list-item title="我的订单" link to="/pages/order/index" rightText="查看全部"></uni-list-item>
@@ -53,6 +59,8 @@
 				</view>
 			</view>
 		</view>
+
+		<!-- 其他服务板块 -->
 		<view class="block">
 			<uni-list class="title" :border="false">
 				<uni-list-item title="其他服务"></uni-list-item>
@@ -70,17 +78,27 @@
 					<i class="iconfont icon-heart-a"></i>
 					<view>收藏夹</view>
 				</view>
-				<view class="item" @click="clickToMakeCall">
+				<button open-type="contact" class="item contact-btn">
 					<i class="iconfont icon-service-b" style="font-size:54rpx;"></i>
 					<view>客服</view>
-				</view>
+				</button>
 			</view>
 		</view>
+
+		<!-- 弹窗 -->
+		<uni-popup ref="popup" type="center" background-color="#fff">
+			<view class="pop-box flex-box-column flex-v-center">
+				<view class="title">会员二维码</view>
+				<canvas class="qr-code" canvas-id="qrCanvas" />
+				<view class="close-btn" @click="showPopup(false)">关闭</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 <script>
 import pageUrl from '@/config/page';
 import { mapState } from 'vuex';
+import QR from '@/common/utils/qrcode';
 export default {
 	data() {
 		return {};
@@ -100,16 +118,28 @@ export default {
 				this.tips('页面不存在');
 			}
 		},
-		// 打电话
-		clickToMakeCall() {
-			uni.makePhoneCall({
-				phoneNumber: '123456' //仅为示例
-			});
+
+		// 显示弹窗
+		showPopup(show = false) {
+			if (show) {
+				this.$refs.popup.open();
+				this.createQrCode('https://www.baidu.com', 'qrCanvas', 100, 100);
+			} else {
+				this.$refs.popup.close();
+			}
+		},
+
+		// 绘制二维码
+		createQrCode: function(content, canvasId, cavW, cavH) {
+			QR.api.draw(content, canvasId, cavW, cavH);
 		}
 	}
 };
 </script>
 <style lang="scss">
+.uni-popup__wrapper {
+	border-radius: 20rpx;
+}
 .header {
 	padding: 100rpx 40rpx;
 	background-color: #e7493f;
@@ -122,6 +152,11 @@ export default {
 	}
 	.username-box {
 		margin-left: 20rpx;
+		font-size: 40rpx;
+
+		.member-label {
+			font-size: 24rpx;
+		}
 	}
 }
 .block {
@@ -141,7 +176,6 @@ export default {
 }
 .menu {
 	text-align: center;
-	font-size: -30rpx;
 	line-height: 50rpx;
 	padding: 30rpx 0 10rpx;
 }
@@ -160,5 +194,42 @@ export default {
 }
 .iconfont {
 	font-size: 50rpx;
+}
+.contact-btn {
+	background-color: #fff;
+	line-height: 50rpx;
+	font-size: 20rpx;
+	color: #666;
+	margin: 0;
+	padding: 0;
+
+	&::after {
+		border: none;
+	}
+}
+
+.pop-box {
+	width: 200px;
+	height: 200px;
+
+	.title {
+		padding: 20rpx 0 30rpx;
+		text-align: center;
+	}
+
+	.qr-code {
+		width: 100px;
+		height: 100px;
+		padding: 0;
+	}
+
+	.close-btn {
+		width: 100%;
+		text-align: center;
+		font-size: 24rpx;
+		padding: 20rpx 0;
+		border-top: 1px solid #ccc;
+		margin-top: 20rpx;
+	}
 }
 </style>
