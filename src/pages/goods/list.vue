@@ -32,14 +32,51 @@
 		<!-- 商品列表 -->
 		<view class="goods-list flex-box flex-wrap flex-h-between">
 			<block v-if="listMode == 1">
-				<view v-for="goodsItem in 15" :key="goodsItem" class="goods-item-1" @click="navigateTo(goodsItem)">{{
-					goodsItem
-				}}</view>
+				<view
+					v-for="goodsItem in 15"
+					:key="goodsItem"
+					class="goods-item-1 flex-box"
+					@click="navigateTo(goodsItem)"
+				>
+					<image
+						class="goods-image flex-shrink-0"
+						src="https://img12.360buyimg.com/n7/jfs/t1/194554/15/8513/235520/60cabc50Eb5cd12b8/1707e79dffe568d4.jpg"
+						alt="goodsImage"
+					/>
+					<view class="flex-item-1 goods-info">
+						<view class="goods-name doubleline-text"
+							>亲肤棉商务短袖衬衫测试测试测试测试测试测试测试测试测试测试测试测试测试</view
+						>
+						<view class="flex-box">
+							<view class="label">特惠</view>
+							<view class="label">满300减30</view>
+						</view>
+						<view class="flex-box flex-v-center">
+							<view class="goods-price">¥199.00</view>
+							<view class="goods-origin-price">¥299.00</view>
+						</view>
+					</view>
+				</view>
 			</block>
 			<block v-else-if="listMode == 2">
-				<view v-for="goodsItem in 15" :key="goodsItem" class="goods-item-2" @click="navigateTo(goodsItem)">{{
-					goodsItem
-				}}</view>
+				<view v-for="goodsItem in 15" :key="goodsItem" class="goods-item-2" @click="navigateTo(goodsItem)">
+					<image
+						class="goods-image"
+						src="https://img12.360buyimg.com/n7/jfs/t1/194554/15/8513/235520/60cabc50Eb5cd12b8/1707e79dffe568d4.jpg"
+						alt="goodsImage"
+					/>
+					<view class="goods-info">
+						<view class="goods-name singleline-text">亲肤棉商务短袖衬衫测试测试测试测试测试测试</view>
+						<view class="flex-box">
+							<view class="label">特惠</view>
+							<view class="label">满300减30</view>
+						</view>
+						<view class="flex-box flex-v-center">
+							<view class="goods-price">¥199.00</view>
+							<view class="goods-origin-price">¥299.00</view>
+						</view>
+					</view>
+				</view>
 			</block>
 		</view>
 		<!-- 筛选抽屉 -->
@@ -97,11 +134,12 @@ export default {
 </script>
 <style lang="scss">
 .sort-box {
-	padding: 10rpx 0;
+	padding: 20rpx 0;
 	font-size: 26rpx;
 	background-color: #fff;
 	position: sticky;
 	top: 0;
+	z-index: 100;
 
 	.item-active {
 		color: #f80707;
@@ -168,18 +206,67 @@ export default {
 	padding: 20rpx 32rpx 0;
 	.goods-item-1 {
 		width: 100%;
-		height: 200rpx;
 		background-color: #fff;
 		margin-bottom: 20rpx;
 		border-radius: 10rpx;
+
+		.goods-image {
+			width: 280rpx;
+			height: 280rpx;
+		}
 	}
 
 	.goods-item-2 {
-		width: 48%;
-		height: 200rpx;
+		width: 335rpx;
+		// height: 450rpx;
 		background-color: #fff;
 		margin-bottom: 20rpx;
-		border-radius: 10rpx;
+		border-radius: 20rpx;
+		overflow: hidden;
+
+		.goods-image {
+			width: 335rpx;
+			height: 335rpx;
+		}
+	}
+
+	.goods-info {
+		overflow: hidden;
+		padding: 20rpx;
+	}
+
+	.goods-name {
+		font-size: 24rpx;
+		color: #333333;
+		font-weight: 400;
+	}
+
+	.label {
+		// width: 66rpx;
+		height: 30rpx;
+		line-height: 30rpx;
+		text-align: center;
+		background: #eeeeee;
+		border-radius: 15rpx;
+		font-size: 20rpx;
+		color: #ef3030;
+		padding: 0 10rpx;
+		margin: 20rpx 20rpx 0 0;
+	}
+
+	.goods-price {
+		padding: 0 8rpx;
+		margin-top: 20rpx;
+		font-size: 30rpx;
+		color: #000;
+		font-weight: 400;
+	}
+	.goods-origin-price {
+		padding: 0 8rpx;
+		margin-top: 20rpx;
+		font-size: 24rpx;
+		color: #999;
+		text-decoration: line-through;
 	}
 }
 .icon-liebiaomoshi {

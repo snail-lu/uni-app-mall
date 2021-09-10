@@ -76,4 +76,16 @@ page {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
+/* 双行文本，超出省略 */
+.doubleline-text {
+	white-space: normal;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	word-break: break-all;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	width: 100%;
+	overflow: hidden;
+}
 </style>
