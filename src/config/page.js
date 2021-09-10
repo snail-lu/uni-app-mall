@@ -4,6 +4,8 @@ export default {
 	home: '/pages/index/index',
 	goodsDetail: '/pages/goods/detail',
 	address: '/pages/address/index',
+	cart: '/pages/cart/index',
+	createOrder: '/pages/order/create',
 	addressDetail: '/pages/address/detail',
 	favorites: '/pages/member/favorites/index',
 	coupon: '/pages/member/coupon/index',

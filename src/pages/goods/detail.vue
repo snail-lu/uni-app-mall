@@ -1,10 +1,16 @@
 <template>
 	<view>
 		<!-- 顶部轮播 -->
-		<uni-swiper-dot :info="info" :current="current" field="content" :mode="mode" :dotsStyles="dotsStyles">
-			<swiper class="swiper-box" @change="change" :circular="true" :autoplay="true">
+		<uni-swiper-dot
+			:info="goodsMainImages"
+			:current="current"
+			field="content"
+			mode="round"
+			:dotsStyles="dotsStyles"
+		>
+			<swiper class="swiper-box" @change="onSwiperChange" :circular="true" :autoplay="true">
 				<swiper-item
-					v-for="(item, index) in info"
+					v-for="(item, index) in goodsMainImages"
 					:key="index"
 					:class="['swiper-item', `swiper-item-${index}`]"
 				>
@@ -17,8 +23,8 @@
 
 		<!-- 商品基础信息 -->
 		<view class="goods-info">
-			<view class="label">促销</view>
 			<view class="goods-name">HLA/海澜之家易打理弹力套装西服 深蓝色深蓝</view>
+			<view class="label">促销</view>
 			<view class="flex-box flex-h-between flex-v-center" style="margin-top: 22rpx;">
 				<view class="flex-box flex-v-center">
 					<view class="sale-price">¥499</view>
@@ -42,25 +48,30 @@
 					<i class="iconfont icon-service"></i>
 					<view>客服</view>
 				</button>
-				<view class="menu-item" @click="switchTo">
+				<view class="menu-item" @click="navigateTo('cart')">
 					<uni-badge class="num_b" size="small" type="error" text="3"></uni-badge>
 					<i class="iconfont icon-add-cart"></i>
 					<view>购物车</view>
 				</view>
 			</view>
 			<view class="box-r flex-box flex-v-center flex-h-end">
-				<view class="add-cart-btn" @click="showPopup">加入购物车</view>
-				<view class="buy-btn" @click="showPopup">立即购买</view>
+				<view class="add-cart-btn" @click="onAddCart(false)">加入购物车</view>
+				<view class="buy-btn" @click="onAddCart(true)">立即购买</view>
 			</view>
 		</view>
 
 		<!-- 商品属性弹窗 -->
 		<uni-popup ref="popup" type="bottom" background-color="#fff">
 			<view class="popup-box">
-				<view class="close-btn" @click="hidePopup">×</view>
+				<view class="close-btn" @click="changePopupVisible(false)">×</view>
 				<view class="title">颜色分类</view>
 				<scroll-view class="color-list flex-box" scroll-x="true">
-					<view v-for="item in 10" :key="item" class="color-item">
+					<view
+						v-for="color in 10"
+						:key="color"
+						:class="{ 'color-item': true, 'color-item-active': color === addCartInfo.color }"
+						@click="clickToSelectedAttr('color', color)"
+					>
 						<image
 							class="color-img"
 							src="https://img14.360buyimg.com/n4/jfs/t1/191922/27/14687/124506/60f997ecE179afa7b/1bb11a94439cd17f.jpg"
@@ -71,18 +82,25 @@
 
 				<view class="title">尺码</view>
 				<view class="size-list flex-box flex-wrap">
-					<view v-for="size in 10" :key="size" class="size-item">{{ size }}</view>
+					<view
+						v-for="size in 10"
+						:key="size"
+						:class="{ 'size-item': true, 'size-item-active': size === addCartInfo.size }"
+						@click="clickToSelectedAttr('size', size)"
+						>{{ size }}</view
+					>
 				</view>
 				<view class="flex-box flex-h-between flex-v-center" style="margin-bottom: 30rpx;">
 					<view class="numbox-title">数量</view>
-					<uni-number-box v-model="goodsNumber"></uni-number-box>
+					<uni-number-box v-model="addCartInfo.goodsNum"></uni-number-box>
 				</view>
-				<view class="confirm-btn" @click="hidePopup">确认</view></view
+				<view class="confirm-btn" @click="onConfirm">确认</view></view
 			>
 		</uni-popup>
 	</view>
 </template>
 <script>
+import pageUrl from '@/config/page';
 export default {
 	data() {
 		return {
@@ -109,11 +127,13 @@ export default {
 					color: '#fff'
 				}
 			],
-			info: [
+			// 商品主图
+			goodsMainImages: [
 				'https://m.360buyimg.com/mobilecms/s843x843_jfs/t1/165064/19/13291/177381/60501634Efa367d12/7baa92ebf0382fbd.jpg!q70.dpg.webp',
 				'https://m.360buyimg.com/mobilecms/s843x843_jfs/t1/155661/8/16135/174546/60501634E410573f5/db95b968570de121.jpg!q70.dpg.webp',
 				'https://m.360buyimg.com/mobilecms/s843x843_jfs/t1/166955/36/12978/210572/60501635E49fd4b73/2344d437280dad08.jpg!q70.dpg.webp'
 			],
+			// 商品详情图
 			goodsDetailImages: [
 				'https://img30.360buyimg.com/popWareDetail/jfs/t1/170128/15/14997/158525/605ed84dE59a7c340/cd89849879dafc1d.jpg!q70.dpg.webp',
 				'https://img30.360buyimg.com/popWareDetail/jfs/t1/191127/8/12062/53768/60e56f4cE4b20319d/5b91d1c9a1d218b2.jpg!q70.dpg.webp',
@@ -122,41 +142,71 @@ export default {
 				'https://img30.360buyimg.com/popWareDetail/jfs/t1/175628/23/18608/40335/60e56b27Eff528e6a/1f7b64f7395aa3ec.jpg!q70.dpg.webp'
 			],
 			current: 0,
-			mode: 'round',
+			// 轮播指示器样式
 			dotsStyles: {
 				backgroundColor: 'rgba(0,0,0,0.30);',
 				selectedBackgroundColor: '#333',
 				border: 'none',
 				selectedBorder: 'none'
 			},
-			goodsNumber: 1
+			// 加购参数
+			addCartInfo: {
+				goodsNum: 1,
+				color: '',
+				size: ''
+			},
+			isQuickBuy: false // 是否立即购买
 		};
 	},
 	methods: {
-		switchTo() {
-			this.switchUrl('/pages/cart/index');
+		// 页面跳转
+		navigateTo(pageName) {
+			const url = pageUrl[pageName];
+			if (url) {
+				this.smartPushUrl(url);
+			} else {
+				this.tips('页面不存在');
+			}
 		},
-		navigateTo() {
-			this.pushUrl('/pages/order/create');
-		},
-		change(e) {
+
+		// 切换轮播
+		onSwiperChange(e) {
 			this.current = e.detail.current;
 		},
-		onClick(e) {
-			uni.showToast({
-				title: `点击${e.content.text}`,
-				icon: 'none'
-			});
+
+		// 显示/隐藏弹窗
+		changePopupVisible(show = true) {
+			if (show) {
+				this.$refs.popup.open();
+			} else {
+				this.$refs.popup.close();
+			}
 		},
-		buttonClick(e) {
-			console.log(e);
-			this.options[2].info++;
+
+		// 选择商品属性
+		clickToSelectedAttr(attrName, attrValue) {
+			this.addCartInfo[attrName] = attrValue;
 		},
-		showPopup() {
-			this.$refs.popup.open();
+
+		// 是否立即购买
+		onAddCart(isQuickBuy = false) {
+			this.isQuickBuy = isQuickBuy;
+			this.changePopupVisible();
 		},
-		hidePopup() {
-			this.$refs.popup.close();
+
+		// 确认
+		onConfirm() {
+			const { addCartInfo } = this;
+			if (!addCartInfo.size || !addCartInfo.color) {
+				this.tips('请先选择颜色和尺码:)');
+				return;
+			}
+			if (this.isQuickBuy) {
+				this.pushUrl(pageUrl.createOrder);
+			} else {
+				this.tips('加入购物车成功!');
+				this.changePopupVisible(false);
+			}
 		}
 	}
 };
@@ -273,7 +323,7 @@ export default {
 
 	.goods-name {
 		font-size: 26rpx;
-		margin-top: 17rpx;
+		margin-bottom: 17rpx;
 	}
 
 	.sale-price {
@@ -329,6 +379,11 @@ export default {
 		text-align: center;
 		font-size: 24rpx;
 		color: #333;
+		box-sizing: border-box;
+
+		&-active {
+			border: 1px solid #000;
+		}
 	}
 
 	.color-img {
@@ -349,6 +404,13 @@ export default {
 		line-height: 80rpx;
 		border: 1px solid #e8e8e8;
 		margin: 0px -1px -1px 0px;
+		box-sizing: border-box;
+
+		&-active {
+			// border: 1px solid #000;
+			background-color: #000;
+			color: #fff;
+		}
 	}
 
 	.title {
