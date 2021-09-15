@@ -94,6 +94,7 @@
 </template>
 <script>
 import { NumberBox } from '@/common/components/number-box.vue';
+import pageUrl from '@/config/page';
 export default {
 	components: {
 		NumberBox
@@ -260,6 +261,14 @@ export default {
 					this.invalidCartList = [];
 				}
 			});
+		},
+
+		// 结算
+		bindSettle() {
+			if (this.selectedGoodsNum <= 0) {
+				return;
+			}
+			this.pushUrl(pageUrl.createOrder);
 		}
 	}
 };
