@@ -3,7 +3,7 @@
 		<view class="flex-item-1 address-list">
 			<view v-if="addressList.length">
 				<view class="address-item flex-box" v-for="addressItem in addressList" :key="addressItem.id">
-					<view class="flex-item-1" @click="selectAddressHandler(addressItem)">
+					<view class="flex-item-1" @click="onSelectAddress(addressItem)">
 						<view class="flex-box">
 							<view class="username">{{ addressItem.consignee }}</view>
 							<view class="mobile">{{ addressItem.mobile }}</view>
@@ -37,7 +37,7 @@ import pageUrl from '@/config/page';
 export default {
 	data() {
 		return {
-			selectMode: false,
+			selectMode: false, // 选择地址模式
 			addressList: [
 				{
 					id: 1,
@@ -73,13 +73,10 @@ export default {
 		if (options.selectMode) {
 			this.selectMode = true;
 		}
-		if (options.userId || options.distributionRole) {
-			this.params.roleUserId = options.userId || '';
-			this.params.distributionRole = options.distributionRole || '';
-		}
 	},
 
 	methods: {
+		// 获取地址列表
 		async fetchAddressList() {
 			let { addressPageService } = this;
 			let addressListData = await addressPageService.getAddressList(this.params);
@@ -103,8 +100,17 @@ export default {
 			this.pushUrl(page);
 		},
 
+		// 新增地址
 		onAdd() {
 			this.pushUrl(pageUrl.addressDetail);
+		},
+
+		// 选择地址
+		onSelectAddress(address) {
+			if (this.selectMode) {
+				this.$store.commit('setAddress', address);
+				this.back();
+			}
 		}
 	}
 };

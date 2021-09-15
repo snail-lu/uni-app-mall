@@ -220,7 +220,7 @@ export default {
 	methods: {
 		// 选择地址
 		chooseAddress() {
-			this.pushUrl('/pages/address/index?page=order');
+			this.pushUrl('/pages/address/index?selectMode=true');
 		},
 		// 显示弹窗
 		showPopup() {
