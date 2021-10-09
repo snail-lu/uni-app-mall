@@ -2,6 +2,7 @@
 export default {
 	tabBarList: ['pages/index/index', 'pages/category/index', 'pages/cart/index', 'pages/member/index'], // tabBar页面
 	home: '/pages/index/index',
+	goodsList: '/pages/goods/list',
 	goodsDetail: '/pages/goods/detail',
 	address: '/pages/address/index',
 	cart: '/pages/cart/index',

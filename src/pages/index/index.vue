@@ -3,9 +3,10 @@
 		<!-- 搜索栏 -->
 		<uni-search-bar
 			:radius="100"
-			@confirm="search"
+			@confirm="onSearch"
 			placeholder="搜索商品名称/款号"
 			bgColor="#f5f5f5"
+			v-model="searchKey"
 		></uni-search-bar>
 
 		<!-- 轮播 -->
@@ -56,11 +57,9 @@
 		<!-- 悬浮按钮 -->
 		<view class="floating-box">
 			<button class="floating-btn flex-box flex-h-center flex-v-center" open-type="contact">
-				<!-- <image src="/static/home/service.png" /> -->
 				<i class="iconfont icon-service"></i>
 			</button>
 			<view class="floating-btn flex-box flex-h-center flex-v-center" @click="backToTop">
-				<!-- <image src="/static/home/backToTop.png" /> -->
 				<i class="iconfont icon-top"></i>
 			</view>
 		</view>
@@ -68,9 +67,8 @@
 </template>
 
 <script>
-import store from '@/store/index';
 import { mapState } from 'vuex';
-import HomePageService from '@/services/page/homePageService';
+import pageUrl from '@/config/page';
 export default {
 	data() {
 		return {
@@ -92,7 +90,8 @@ export default {
 				selectedBackgroundColor: '#d8d8d8',
 				border: 'none',
 				selectedBorder: 'none'
-			}
+			},
+			searchKey: ''
 		};
 	},
 	computed: {
@@ -100,6 +99,7 @@ export default {
 			userInfo: state => state.userInfo
 		})
 	},
+	onLoad() {},
 	methods: {
 		navigateTo() {
 			this.pushUrl('/pages/goods/detail');
@@ -107,22 +107,19 @@ export default {
 		change(e) {
 			this.current = e.detail.current;
 		},
-		apiTest() {
-			HomePageService.apiTest();
-		},
 		// 回到顶部
 		backToTop() {
 			uni.pageScrollTo({
 				scrollTop: 0,
 				duration: 300
 			});
+		},
+
+		// 搜索
+		onSearch() {
+			const { searchKey } = this;
+			this.pushUrl(pageUrl.goodsList, { key: searchKey });
 		}
-	},
-	onLoad() {
-		// store.dispatch('refreshCartNum', {
-		// 	cartNum: 10
-		// });
-		// this.apiTest();
 	}
 };
 </script>

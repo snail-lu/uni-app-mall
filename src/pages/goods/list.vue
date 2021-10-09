@@ -89,6 +89,7 @@
 	</view>
 </template>
 <script>
+import PlatformService from '@/services/common/platformService';
 export default {
 	data() {
 		return {
@@ -103,6 +104,11 @@ export default {
 			listMode: 1, // 列表模式   1: 单列   2：双列
 			goodsList: []
 		};
+	},
+	onLoad(options) {
+		if (options.key) {
+			PlatformService.setTitle(decodeURIComponent(options.key));
+		}
 	},
 	methods: {
 		// 页面跳转
