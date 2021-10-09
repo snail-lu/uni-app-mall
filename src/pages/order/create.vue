@@ -23,45 +23,40 @@
 		</view>
 		<!-- 订单商品 -->
 		<view class="goods-list">
+			<view class="title">商品明细</view>
 			<block v-for="item in cartGoodsList" :key="item.id">
-				<view class="cart-goodsitem flex-box flex-v-center flex-h-between">
+				<view class="cart-goods-item flex-box flex-v-center flex-h-between">
 					<image :src="imgIp + item.goodsImgAddress" class="goods-img"></image>
 					<view class="goods-right">
-						<view class="goodsname over-dian">{{ item.goodsName }}</view>
-						<view class="goods-cent flex-box flex-h-between">
-							<view class="sizename over-dian">{{ item.goodsSpec }}</view>
-						</view>
+						<view class="goods-name singleline-text">{{ item.goodsName }}</view>
+						<view class="size-name singleline-text">{{ item.goodsSpec }}</view>
 						<view class="goods-bot flex-box flex-h-between">
 							<view class="goods-price">￥{{ item.salePrice }}</view>
-							<view class="count flex-box flex-v-center">
-								<view class="goods-num">×{{ item.goodsNum }}</view>
-							</view>
+							<view class="goods-num">×{{ item.goodsNum }}</view>
 						</view>
 					</view>
 				</view>
 			</block>
 		</view>
 		<!-- 订单结算 -->
-		<view class="order-bot">
-			<view class="title" style="margin:20rpx 0 40rpx 0;">价格明细</view>
-			<view class="flex-box flex-v-center flex-h-between">
+		<view class="order-info">
+			<view class="title">价格明细</view>
+			<view class="order-item flex-box flex-v-center flex-h-between">
 				<span>商品总价</span>
-				<span>￥{{ orderInfo.goodsAmount }}</span>
+				<span>¥{{ orderInfo.goodsAmount }}</span>
 			</view>
-			<view class="flex-box color-666 flex-v-center flex-h-between">
+			<view class="order-item flex-box color-666 flex-v-center flex-h-between">
 				<span>运费</span>
-				<span>￥{{ orderInfo.freightAmount }}</span>
+				<span>¥{{ orderInfo.freightAmount }}</span>
 			</view>
-			<view class="flex-box color-666 flex-v-center flex-h-between">
+			<view class="order-item flex-box color-666 flex-v-center flex-h-between">
 				<span>优惠</span>
-				<!-- <picker @change="bindPickerChange" mode="selector" :value="index" :range="couponList" range-key='voucherName'> -->
 				<view class="flex-box color-666 flex-v-center flex-h-between" @click="showPopup">
 					<span>{{
 						orderInfo.discount ? '-' + orderInfo.discount : Nullcoupon ? '暂无优惠券可用' : '不使用优惠券'
 					}}</span
-					><uni-icons type="arrowright" size="20"></uni-icons>
+					><uni-icons type="arrowright" size="14" color="#666"></uni-icons>
 				</view>
-				<!-- </picker> -->
 			</view>
 		</view>
 		<!-- 商品属性弹窗 -->
@@ -91,7 +86,7 @@
 							class="add-check"
 						></image>
 						<view
-							class="couponItem flex-box flex-h-between flex-v-center"
+							class="coupon-item flex-box flex-h-between flex-v-center"
 							style="width:100%"
 							v-if="coupon.voucherName"
 						>
@@ -121,7 +116,7 @@
 								暂不可用
 							</view>
 						</view>
-						<view class="couponItem" style="width:100%" v-else>
+						<view class="coupon-item" style="width:100%" v-else>
 							<view class="coupon-top">不使用优惠券</view>
 						</view>
 					</view>
@@ -132,7 +127,9 @@
 		<view class="pay-box flex-box flex-v-center flex-h-between">
 			<view class="pay-left">
 				<view class="pay-top color-666" style="font-size:24rpx">共计{{ orderInfo.totalGoods }}件</view>
-				<view class="pay-bottom">合计￥{{ orderInfo.orderPaidAmount }}</view>
+				<view class="pay-bottom"
+					>合计<span class="color-main">¥{{ orderInfo.orderPaidAmount }}</span></view
+				>
 			</view>
 			<button class="alibutton btn-width" :disabled="aliDisabled" @click="clickToPay">去支付</button>
 		</view>
@@ -164,7 +161,7 @@ export default {
 			cartGoodsList: [
 				{
 					id: 1,
-					goodsName: '测试商品1，名字超长测试测试测试测试测试',
+					goodsName: '测试商品1，名字超长测试测试测试测试测试测试测试测试测试',
 					marketPrice: '599.00',
 					salePrice: '342.00',
 					goodsNum: 1,
@@ -172,7 +169,7 @@ export default {
 				},
 				{
 					id: 2,
-					goodsName: '测试商品2，名字超长测试测试测试测试测试',
+					goodsName: '测试商品2，名字超长测试测试测试测试测试测试测试测试测试',
 					marketPrice: '499.00',
 					salePrice: '299.00',
 					goodsNum: 1,
@@ -180,7 +177,7 @@ export default {
 				},
 				{
 					id: 3,
-					goodsName: '测试商品3，名字超长测试测试测试测试测试',
+					goodsName: '测试商品3，名字超长测试测试测试测试测试测试测试测试测试',
 					marketPrice: '459.00',
 					salePrice: '399.00',
 					goodsNum: 1,
@@ -188,7 +185,7 @@ export default {
 				},
 				{
 					id: 4,
-					goodsName: '测试商品4，名字超长测试测试测试测试测试',
+					goodsName: '测试商品4，名字超长测试测试测试测试测试测试测试测试测试',
 					marketPrice: '359.00',
 					salePrice: '299.00',
 					goodsNum: 1,
@@ -278,7 +275,7 @@ page {
 .create-order-container {
 	padding: 0;
 	.address-item {
-		padding: 32rpx 26rpx;
+		padding: 32rpx 30rpx;
 		background-color: #fff;
 		border-radius: 10rpx;
 		margin-bottom: 20rpx;
@@ -330,19 +327,21 @@ page {
 		margin-top: 30rpx;
 		padding: 20rpx 30rpx;
 		background: #fff;
-		.redtip {
-			padding: 20rpx 20rpx 40rpx 20rpx;
-			font-size: 28rpx;
-			color: #e82a2a;
+
+		.title {
+			font-weight: bold;
+			font-size: 30rpx;
 		}
-		.cart-goodsitem {
+
+		.cart-goods-item {
 			height: 216rpx;
 			background: #fff;
 			border-bottom: solid #eee 1rpx;
-			.checkimg {
-				width: 35rpx;
-				height: 35rpx;
+
+			&:last-child {
+				border-bottom: none;
 			}
+
 			.goods-img {
 				width: 160rpx;
 				height: 160rpx;
@@ -353,71 +352,31 @@ page {
 			.goods-right {
 				width: 500rpx;
 			}
-			.outleft {
-				padding: 10rpx 20rpx;
-				font-size: 26rpx;
-				border-radius: 8rpx;
-				background: #959697;
-				color: #fff;
-			}
-			.goodsbot {
-				font-size: 28rpx;
-				color: #959697;
-				margin-top: 48rpx;
-			}
-			.goodsname {
-				width: 460rpx;
+			.goods-name {
 				font-size: 26rpx;
 				margin-bottom: 10rpx;
 			}
-			.sizename {
-				width: 119rpx;
+			.size-name {
+				display: inline-block;
 				text-align: center;
 				padding: 6rpx 14rpx;
 				line-height: 32rpx;
 				background: #f5f5f5;
-				font-size: 12px;
+				font-size: 20rpx;
 				border-radius: 16rpx;
 				color: #666;
-			}
-			.codename {
-				width: 130rpx;
-				text-align: center;
-				padding: 6rpx 14rpx;
-				line-height: 32rpx;
-				color: #666;
-				background: #f5f5f5;
-				font-size: 12px;
-				border-radius: 16rpx;
 			}
 			.goods-bot {
 				margin-top: 40rpx;
-				.count {
-					overflow: hidden;
-					margin: 0 16px 0 -20px;
-					.goods-num {
-						display: inline-block;
-						line-height: 38rpx;
-						text-align: center;
-						font-size: 26rpx;
-						cursor: pointer;
-						width: 60rpx;
-						height: 38rpx;
-						color: #333;
-						border-left: 0;
-						border-right: 0;
-					}
+				.goods-num {
+					font-size: 26rpx;
+					color: #333;
 				}
 			}
 		}
 	}
 }
 
-.add-check {
-	width: 42rpx;
-	height: 42rpx;
-	margin-right: 50rpx;
-}
 .popup-box {
 	.header {
 		padding: 40rpx;
@@ -446,19 +405,14 @@ page {
 			pointer-events: none;
 		}
 	}
+
+	.add-check {
+		width: 42rpx;
+		height: 42rpx;
+		margin-right: 50rpx;
+	}
 }
-.detail-box {
-	padding: 0 30rpx;
-}
-.rightimg {
-	width: 20rpx;
-	height: 20rpx;
-	margin-left: 15rpx;
-}
-.detail-item {
-	text-align: center;
-	margin-bottom: 10rpx;
-}
+
 .pay-box {
 	position: fixed;
 	left: 0;
@@ -468,6 +422,7 @@ page {
 	height: 120rpx;
 	background: #ffffff;
 	box-shadow: inset 0px 2px 0px 0px rgba(238, 238, 238, 1);
+	padding-bottom: env(safe-area-inset-bottom);
 	.pay-bottom {
 		font-size: 32rpx;
 		color: #000;
@@ -487,47 +442,21 @@ page {
 		margin-left: 40rpx;
 	}
 }
-.order-bot {
-	padding: 30rpx 20rpx;
+.order-info {
+	padding: 30rpx;
 	background: #ffffff;
 	margin-top: 30rpx;
 	padding-bottom: 220rpx;
 	font-size: 28rpx;
-	view {
+
+	.title {
+		font-weight: bold;
+		font-size: 30rpx;
 		margin-bottom: 20rpx;
 	}
-}
-.detail-item {
-	line-height: 34rpx;
-	font-size: 24rpx;
-	color: #666;
-}
-.address-k-bot {
-	font-size: 26rpx;
-	color: #000;
-}
-.right-jian {
-	width: 30rpx;
-	height: 30rpx;
-	margin-left: 6rpx;
-}
-.redtip {
-	font-size: 28rpx;
-	color: #e82a2a;
-}
-.over-dian {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-.color-666 {
-	color: #666;
-}
-.outbox {
-	width: 690rpx;
-	margin: 0 auto;
-	background: #fff;
-	position: relative;
-	overflow: hidden;
+
+	.order-item {
+		margin-bottom: 10rpx;
+	}
 }
 </style>
