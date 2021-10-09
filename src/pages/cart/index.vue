@@ -276,15 +276,11 @@ export default {
 <style lang="scss">
 page {
 	height: 100%;
-	box-sizing: border-box;
-	padding-bottom: env(safe-area-inset-bottom);
 }
 
 .cart-container {
 	height: 100%;
-	box-sizing: border-box;
 	background-color: #f5f5f5;
-	padding-bottom: env(safe-area-inset-bottom);
 
 	.cart-main {
 		padding-bottom: 30rpx;
