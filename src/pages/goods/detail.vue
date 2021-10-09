@@ -220,6 +220,7 @@ export default {
 	height: 120rpx;
 	background: #ffffff;
 	box-shadow: 0rpx -1px 4rpx 0rpx rgba(125, 125, 125, 0.5);
+	padding-bottom: env(safe-area-inset-bottom);
 
 	.box-l {
 		.menu-item {
@@ -345,7 +346,8 @@ export default {
 }
 
 .goods-detail {
-	margin: 20rpx 0 140rpx 0;
+	margin-top: 20rpx;
+	margin-bottom: calc(env(safe-area-inset-bottom) + 128rpx);
 	.detail-img {
 		width: 100%;
 		display: block;
