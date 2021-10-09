@@ -83,6 +83,12 @@
 			}
 		},
 		{
+			"path": "pages/member/coupon/detail",
+			"style": {
+				"navigationBarTitleText": "使用优惠券"
+			}
+		},
+		{
 			"path": "pages/order/index",
 			"style": {
 				"navigationBarTitleText": "订单列表"

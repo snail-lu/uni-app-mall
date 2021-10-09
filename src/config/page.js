@@ -10,6 +10,7 @@ export default {
 	addressDetail: '/pages/address/detail',
 	favorites: '/pages/member/favorites/index',
 	coupon: '/pages/member/coupon/index',
+	couponDetail: '/pages/member/coupon/detail',
 	personalInfo: '/pages/member/personalInfo/index',
 	afterSale: '/pages/member/afterSale/index',
 	payResult: '/pages/order/payResult'

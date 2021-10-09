@@ -1,21 +1,16 @@
 <template>
 	<view class="coupon-container">
 		<view class="tab-box flex-box">
-			<view @click="onChangeTab('1')" :class="{ 'tab-item': true, 'tab-item-active': status == '1' }"
-				>待使用</view
-			>
-			<view @click="onChangeTab('2')" :class="{ 'tab-item': true, 'tab-item-active': status == '2' }"
-				>已使用</view
-			>
-			<view @click="onChangeTab('3')" :class="{ 'tab-item': true, 'tab-item-active': status == '3' }"
-				>已过期</view
-			>
+			<view @click="onChangeTab(1)" :class="{ 'tab-item': true, 'tab-item-active': status === 1 }">待使用</view>
+			<view @click="onChangeTab(2)" :class="{ 'tab-item': true, 'tab-item-active': status === 2 }">已使用</view>
+			<view @click="onChangeTab(3)" :class="{ 'tab-item': true, 'tab-item-active': status === 3 }">已过期</view>
 		</view>
 		<view class="coupon-list" v-if="showCouponList.length > 0">
 			<view
 				:class="['coupon-item flex-box flex-v-center', item.status != 1 ? 'coupon-item-disabled' : '']"
 				v-for="(item, index) in showCouponList"
 				:key="index"
+				@click="toCouponDetail(item)"
 			>
 				<view class="flex-box" style="align-items: baseline;">
 					<view>¥</view>
@@ -39,12 +34,14 @@
 	</view>
 </template>
 <script>
+import pageUrl from '@/config/page';
 export default {
 	data() {
 		return {
 			couponList: [
 				{
 					couponName: '618满减券',
+					couponNo: 202110010001,
 					couponMoney: 50,
 					couponLimit: 199,
 					effectTime: '2021-09-02 00:00:00',
@@ -53,6 +50,7 @@ export default {
 				},
 				{
 					couponName: '618满减券',
+					couponNo: 202110010002,
 					couponMoney: 50,
 					couponLimit: 199,
 					effectTime: '2021-09-02 00:00:00',
@@ -61,6 +59,7 @@ export default {
 				},
 				{
 					couponName: '618满减券',
+					couponNo: 202110010003,
 					couponMoney: 50,
 					couponLimit: 199,
 					effectTime: '2021-09-02 00:00:00',
@@ -69,11 +68,11 @@ export default {
 				}
 			],
 			total: 0,
-			status: '1',
+			status: 1,
 			params: {
 				pageNo: 1,
 				limit: 10,
-				status: '1'
+				status: 1
 			}
 		};
 	},
@@ -89,21 +88,27 @@ export default {
 		this.handleScroll();
 	},
 	methods: {
-		async getCouponList() {
-			//
-		},
+		// 获取优惠券列表
+		async getCouponList() {},
 
 		// 切换tab
 		onChangeTab(status) {
 			this.status = status;
 		},
 
-		//滚动加载
+		// 触底加载
 		handleScroll() {
 			const { total, params } = this;
 			if (total <= params.pageNo * params.limit) return;
 			this.params.pageNo++;
 			this.getCouponList();
+		},
+
+		// 优惠券详情
+		toCouponDetail(couponInfo) {
+			const { couponNo, status } = couponInfo;
+			if (status !== 1) return;
+			this.pushUrl(pageUrl.couponDetail, { couponNo });
 		}
 	}
 };
