@@ -125,8 +125,8 @@ export default {
 		showPopup(show = false) {
 			if (show) {
 				this.$refs.popup.open();
-				this.createQrCode('https://www.baidu.com', 'qrCanvas', 180, 180);
-				this.createBarCode('https://www.baidu.com', 'barCanvas', 280, 70);
+				this.createQrCode('https://www.baidu.com', 'qrCanvas', 160, 160);
+				this.createBarCode('https://www.baidu.com', 'barCanvas', 260, 70);
 			} else {
 				this.$refs.popup.close();
 			}
@@ -228,15 +228,15 @@ export default {
 	}
 
 	.bar-code {
-		width: 280px;
+		width: 260px;
 		height: 70px;
 		padding: 0;
 		margin-bottom: 20px;
 	}
 
 	.qr-code {
-		width: 180px;
-		height: 180px;
+		width: 160px;
+		height: 160px;
 		padding: 0;
 	}
 
