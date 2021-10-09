@@ -89,6 +89,7 @@
 		<uni-popup ref="popup" type="center" background-color="#fff">
 			<view class="pop-box flex-box-column flex-v-center">
 				<view class="title">会员二维码</view>
+				<canvas class="bar-code" canvas-id="barCanvas" />
 				<canvas class="qr-code" canvas-id="qrCanvas" />
 				<view class="close-btn" @click="showPopup(false)">关闭</view>
 			</view>
@@ -99,6 +100,7 @@
 import pageUrl from '@/config/page';
 import { mapState } from 'vuex';
 import QR from '@/common/utils/qrcode';
+import BarCode from '@/common/utils/barcode';
 export default {
 	data() {
 		return {};
@@ -123,7 +125,8 @@ export default {
 		showPopup(show = false) {
 			if (show) {
 				this.$refs.popup.open();
-				this.createQrCode('https://www.baidu.com', 'qrCanvas', 100, 100);
+				this.createQrCode('https://www.baidu.com', 'qrCanvas', 180, 180);
+				this.createBarCode('https://www.baidu.com', 'barCanvas', 280, 70);
 			} else {
 				this.$refs.popup.close();
 			}
@@ -132,6 +135,11 @@ export default {
 		// 绘制二维码
 		createQrCode: function(content, canvasId, cavW, cavH) {
 			QR.api.draw(content, canvasId, cavW, cavH);
+		},
+
+		// 绘制条形码
+		createBarCode: function(content, canvasId, cavW, cavH) {
+			BarCode.code128(uni.createCanvasContext(canvasId), content, cavW, cavH);
 		}
 	}
 };
@@ -209,18 +217,26 @@ export default {
 }
 
 .pop-box {
-	width: 200px;
-	height: 200px;
+	width: 300px;
 
 	.title {
 		height: 50px;
 		line-height: 50px;
 		text-align: center;
+		font-size: 36rpx;
+		font-weight: bold;
+	}
+
+	.bar-code {
+		width: 280px;
+		height: 70px;
+		padding: 0;
+		margin-bottom: 20px;
 	}
 
 	.qr-code {
-		width: 100px;
-		height: 100px;
+		width: 180px;
+		height: 180px;
 		padding: 0;
 	}
 
