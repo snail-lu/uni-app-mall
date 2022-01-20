@@ -39,6 +39,21 @@
 			<block v-for="(item, index) in goodsDetailImages" :key="index">
 				<image :src="item" class="detail-img" mode="widthFix" />
 			</block>
+
+			<!-- 退换货政策 -->
+			<view class="refund-policy">
+				<view class="title">退换货政策</view>
+				<view class="content"
+					>1.收到货品七天内可申请退换货（以签收日为准起始7天内），退换商品需保证包装及吊牌完好，未经穿着、洗涤、人为损坏、加工等不影响二次销售的情况下，如您对我们的产品不满意，我们将提供退换货的服务，对于贴身衣服（内裤、袜子等），非质量问题，不予退换。若交易已完成，发现质量问题，请在交易完成后15天内联系客服沟通协商处理；对于参与多件多折、多金额段满减等产生差价的商品产生局部退货时，需要重新计算商品的价格，按实际收货的商品件数和金额来计算优惠金额，修改实际退款金额。换货仅支持调换同款尺码。
+				</view>
+				<view class="content"
+					>2.非质量问题退换货买家需承担运费，有质量问题的商品请先与我们联系，关于质量问题和发错商品的，我们承担运费。</view
+				>
+				<view class="content">3.退货时发票需跟随商品同时退回。</view>
+				<view class="content"
+					>4.仓库确认收货后，退款将在5个工作日内退还，换货的商品也将在5个工作日内发出。</view
+				>
+			</view>
 		</view>
 
 		<!-- 底部导航 -->
@@ -351,6 +366,21 @@ export default {
 	.detail-img {
 		width: 100%;
 		display: block;
+	}
+
+	.refund-policy {
+		padding: 0 30rpx 30rpx;
+		margin-top: 82rpx;
+		.title {
+			font-size: 28rpx;
+			font-weight: bold;
+			margin-bottom: 30rpx;
+		}
+		.content {
+			font-size: 24rpx;
+			text-align: justify;
+			line-height: 40rpx;
+		}
 	}
 }
 
