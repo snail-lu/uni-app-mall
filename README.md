@@ -84,8 +84,8 @@ npm run build
 
 ### 项目截图
 
-![image](https://github.com/Snail-Lu/imageGalleries/blob/main/uni-app-mall/image_20210715161503.png?raw=true)
-![image](https://github.com/Snail-Lu/imageGalleries/blob/main/uni-app-mall/image_20210715162441.png?raw=true)
+![](https://fastly.jsdelivr.net/gh/Snail-Lu/imageGalleries/gh-pages/2022/20220523230418.png)
+![](https://fastly.jsdelivr.net/gh/Snail-Lu/imageGalleries/gh-pages/2022/20220523230509.png)
 
 ### 文档
 
