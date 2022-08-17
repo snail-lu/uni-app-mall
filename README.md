@@ -84,8 +84,8 @@ npm run build
 
 ### 项目截图
 
-![](https://fastly.jsdelivr.net/gh/Snail-Lu/imageGalleries/gh-pages/2022/20220523230418.png)
-![](https://fastly.jsdelivr.net/gh/Snail-Lu/imageGalleries/gh-pages/2022/20220523230509.png)
+![](https://s1.ax1x.com/2022/08/17/vBgUoD.png)
+![](https://s1.ax1x.com/2022/08/17/vBgNdO.png)
 
 ### 文档
 
